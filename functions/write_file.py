@@ -1,6 +1,24 @@
 from functions.config import *
 from os import makedirs
 
+schema_write_file = types.FunctionDeclaration(
+    name="write_file",
+    description="Create or overwrite a specified file with the provided content, constrained to the working directory.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="The path to the file to write, relative to the working directory. Must be provided.",
+            ),
+            "content": types.Schema(
+                type=types.Type.STRING,
+                description="The content that will be written to the file. Must be provided.",
+            ),
+        },
+    ),
+)
+
 def write_file(working_directory, file_path, content):
     if not path.exists(path.abspath(working_directory)):
         return f'Error: working directory "{working_directory}" does not exists'

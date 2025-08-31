@@ -1,5 +1,19 @@
 from functions.config import *
 
+schema_get_file_content = types.FunctionDeclaration(
+    name="get_file_content",
+    description="Read the content of a specified file, constrained to the working directory.",
+    parameters=types.Schema(
+        type=types.Type.OBJECT,
+        properties={
+            "file_path": types.Schema(
+                type=types.Type.STRING,
+                description="The file_path to the file to read from, relative to the working directory. Must be provided.",
+            ),
+        },
+    ),
+)
+
 def get_file_content(working_directory, file_path):
     if not path.exists(path.abspath(working_directory)):
         return f'Error: working directory "{working_directory}" does not exists'
