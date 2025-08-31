@@ -43,7 +43,6 @@ def call_function(function_call_part, verbose=False):
     function_name = function_call_part.name
     function_args = function_call_part.args
 
-
     try:
         func = functions_dict[function_name]
     except Exception as e:
@@ -95,29 +94,36 @@ def main():
     api_key = os.environ.get("GEMINI_API_KEY")
     client = genai.Client(api_key=api_key)
 
-    response = client.models.generate_content(
-        model="gemini-2.0-flash-001",
-        contents=messages,
-        config=types.GenerateContentConfig(
-            tools=[available_functions],
-            system_instruction=system_prompt
-        ),
-    )
+    for _ in range(20):
+        response = client.models.generate_content(
+            model="gemini-2.0-flash-001",
+            contents=messages,
+            config=types.GenerateContentConfig(
+                tools=[available_functions],
+                system_instruction=system_prompt
+            ),
+        )
 
-    # print(f"Response: {response.text}")
-    for function_call_part in response.function_calls:
-        function_call_result = call_function(function_call_part, user_args)
-
-        if not function_call_result.parts[0].function_response.response:
-            raise Exception("ERROR: not have a response")
-
-        if user_args:
-            print(f"-> {function_call_result.parts[0].function_response.response}")
-            # print(f"User prompt: {user_prompt}")
-            # print(f"Prompt tokens: {response.usage_metadata.prompt_token_count}")
-            # print(f"Response tokens: {response.usage_metadata.candidates_token_count}")
+        if not response.function_calls and not "Warning: there are non-text parts in the response:" in response.text:
+            print(response.text)
+            break
         
+        for candidate in response.candidates:
+            messages.append(candidate.content)
 
+        try:
+            for function_call_part in response.function_calls:
+                function_call_result = call_function(function_call_part, user_args)
+
+                if not function_call_result.parts[0].function_response.response:
+                    raise Exception("ERROR: not have a response")
+
+                if user_args:
+                    print(f"-> {function_call_result.parts[0].function_response.response}")
+                
+                messages.append(types.Content(role="tool", parts=function_call_result.parts))
+        except Exception as e:
+            print(f"ERROR: {e}")
 
 if __name__ == "__main__":
     main()

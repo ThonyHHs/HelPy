@@ -3,7 +3,7 @@ from os import makedirs
 
 schema_write_file = types.FunctionDeclaration(
     name="write_file",
-    description="Create or overwrite a specified file with the provided content, constrained to the working directory.",
+    description="Overwrite a specified file with the provided content, constrained to the working directory.",
     parameters=types.Schema(
         type=types.Type.OBJECT,
         properties={
