@@ -1,4 +1,4 @@
-# 🧠 Python AI — Agente de Sistema de Arquivos Local
+# 🧠 HelPy — Agente de Sistema de Arquivos Local
 
 Este projeto implementa um **agente de IA em Python** que utiliza a **API Google Gemini** e sua capacidade de *function calling* para interagir de forma controlada com um sistema de arquivos local.
 
@@ -131,3 +131,4 @@ python3 main.py "Leia o arquivo 'lorem.txt' e depois sobrescreva-o com o texto '
 - Criar uma interface interativa (CLI ou web).  
 
 ---
+
