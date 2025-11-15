@@ -39,16 +39,22 @@ Esse ciclo pode se repetir se a IA precisar combinar múltiplas ferramentas (ex.
 Certifique-se de ter **Python 3** instalado.
 
 ### 2. Instalar Dependências
-Crie um arquivo `requirements.txt` com o conteúdo:
+Este projeto usa **`uv`** para gerenciamento de pacotes. As dependências estão listadas no arquivo `pyproject.toml`.
+Se você ainda não tem o `uv`, pode instalá-lo rapidamente por esse [link](https://docs.astral.sh/uv/getting-started/installation/).
 
-```txt
-google-generativeai
-python-dotenv
-```
-
-E instale com:
+Crie o ambiente virtual e instale as dependências:
 ```bash
-pip install -r requirements.txt
+# 1. Crie um ambiente virtual (recomendado)
+uv venv
+
+# 2. Ative o ambiente
+# No macOS/Linux:
+source .venv/bin/activate
+# No Windows (PowerShell):
+.venv\Scripts\Activate.ps1
+
+# 3. Instale as dependências do pyproject.toml
+uv pip install .
 ```
 
 ### 3. Configurar a Chave de API
@@ -131,4 +137,5 @@ python3 main.py "Leia o arquivo 'lorem.txt' e depois sobrescreva-o com o texto '
 - Criar uma interface interativa (CLI ou web).  
 
 ---
+
 
